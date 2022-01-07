@@ -1,7 +1,6 @@
 package com.tunbor.beye.entity;
 
 import com.tunbor.beye.entity.audit.AuditableEntity;
-import com.tunbor.beye.entity.enums.Role;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
@@ -31,7 +30,8 @@ import java.util.Set;
                 "email"
         })
 })
-@EqualsAndHashCode(exclude = "userRoles")
+@ToString(exclude = {"userRoles"})
+@EqualsAndHashCode(callSuper = true, exclude = "userRoles")
 public class User extends AuditableEntity {
 
     @NotBlank
@@ -57,7 +57,7 @@ public class User extends AuditableEntity {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name="company_id", nullable = false)
+    @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
     @OneToMany(mappedBy = "user")

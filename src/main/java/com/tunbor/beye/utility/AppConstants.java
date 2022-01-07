@@ -11,7 +11,4 @@ public interface AppConstants {
 
     public static final UUID SYSTEM_ID = UUID.nameUUIDFromBytes(new byte[0]);      //d41d8cd9-8f00-3204-a980-0998ecf8427e
 
-    public static final int VERSION = 1;
-
-    public static final String VERSION_URL = "/api/v" + AppConstants.VERSION;
 }

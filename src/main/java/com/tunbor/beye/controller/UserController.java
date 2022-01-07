@@ -24,12 +24,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/test")
-    public String test() {
-
-        return "This is a test";
-    }
-
     @PostMapping(value = "/register")
     public String registerUser(@RequestBody @Valid String firstName) {
 
