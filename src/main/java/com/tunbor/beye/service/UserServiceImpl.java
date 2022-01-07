@@ -2,6 +2,7 @@ package com.tunbor.beye.service;
 
 import com.tunbor.beye.entity.User;
 import com.tunbor.beye.repository.UserRepository;
+import com.tunbor.beye.utility.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,19 +29,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UUID uuid, User user) {
-//        userRepository.findByUuid(uuid).ifPre
-        /*
-        userRepository.findById(100L).ifPresent(existingUser -> {
-            if (!existingUser.getId().equals(userId))
-                ServiceUtils.throwDuplicateNameException("User", request.getName());
-        });
-        */
-        return null;
-    }
+    public User updateUser(UUID userId, User user) {
 
-    @Override
-    public User updateUserById(Long userId, User user) {
         /*
         userRepository.findById(userId).ifPresent(existingUser -> {
             if (!existingUser.getId().equals(userId))
@@ -49,4 +39,16 @@ public class UserServiceImpl implements UserService {
         */
         return null;
     }
+
+    /*
+    @Override
+    public User updateUserById(Long userId, User user) {
+
+        userRepository.findById(userId).ifPresent(existingUser -> {
+            if (!existingUser.getId().equals(userId))
+                ServiceUtils.throwDuplicateNameException("User", request.getName());
+        });
+        return null;
+    }
+    */
 }

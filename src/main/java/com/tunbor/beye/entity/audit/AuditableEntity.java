@@ -25,9 +25,9 @@ import java.util.UUID;
 @Setter
 public abstract class AuditableEntity implements Serializable {
 
-    // @Id
+    @Id
     @Column(columnDefinition = "BINARY(16)")
-    private UUID uuid;
+    private UUID id;
 
     @CreatedBy
     @Column(columnDefinition = "BINARY(16)")
@@ -55,8 +55,8 @@ public abstract class AuditableEntity implements Serializable {
 
     @PrePersist
     public void validateUuid() {
-        if (uuid == null)
-            uuid = UUID.randomUUID();
+        if (id == null)
+            id = UUID.randomUUID();
     }
 
 
@@ -73,21 +73,21 @@ public abstract class AuditableEntity implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (uuid == null)
+        if (id == null)
             return super.equals(obj);
         else if (obj == null || obj.getClass() != getClass())
             return false;
 
-        return uuid == ((AuditableEntity) obj).uuid;
+        return id == ((AuditableEntity) obj).id;
     }
 
 
     @Override
     public int hashCode() {
-        if (uuid == null)
+        if (id == null)
             return super.hashCode();
 
-        long bitSum = uuid.getMostSignificantBits() + uuid.getLeastSignificantBits();
+        long bitSum = id.getMostSignificantBits() + id.getLeastSignificantBits();
         return Long.valueOf(bitSum).intValue();
     }
 }

@@ -20,10 +20,6 @@ import javax.persistence.*;
 @Table(name = "user_roles")
 public class UserRole extends AuditableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne
     @JoinColumn(nullable = false)
     private User user;

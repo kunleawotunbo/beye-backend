@@ -51,7 +51,7 @@ public class UserController {
         user.setEmail("test@test.com");
         user.setPassword("Test");
         user.setCompany(company);
-        user.setRoles(Collections.singleton(userRole));
+        user.setUserRoles(Collections.singleton(userRole));
 
         userService.createUser(user);
 

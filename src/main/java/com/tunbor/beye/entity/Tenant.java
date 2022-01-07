@@ -22,10 +22,6 @@ import java.util.Set;
 @Table(name = "tenant")
 public class Tenant extends AuditableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotBlank
     @Size(max = 100)
     private String name;

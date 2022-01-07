@@ -14,5 +14,4 @@ public interface UserService {
 
     User updateUser(UUID id, User user);
 
-    User updateUserById(Long id, User user);
 }

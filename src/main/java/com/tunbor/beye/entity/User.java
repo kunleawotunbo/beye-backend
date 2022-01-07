@@ -31,12 +31,8 @@ import java.util.Set;
                 "email"
         })
 })
-@EqualsAndHashCode(exclude = "roles")
+@EqualsAndHashCode(exclude = "userRoles")
 public class User extends AuditableEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NotBlank
     @Size(max = 100)
@@ -60,20 +56,17 @@ public class User extends AuditableEntity {
     @Size(max = 100)
     private String password;
 
-    /*
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<UserRole> userRoles = new HashSet<>();
-    */
-
     @ManyToOne
     @JoinColumn(name="company_id", nullable = false)
     private Company company;
 
     @OneToMany(mappedBy = "user")
-    private Set<UserRole> roles = new HashSet<>();
+    private Set<UserRole> userRoles = new HashSet<>();
+
+    private Boolean activated = true;
+
+    @Column(nullable = false)
+    private String hash;
 
     private boolean accountNonExpired;
     private boolean accountNonLocked;
