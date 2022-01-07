@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public static final String[] WHITELIST_URLS = {
+    protected static final String[] NO_AUTH_WHITELIST = {
             "/api/auth/**",
             "/api/users/authenticate",
             "/api/users/refresh-token",
@@ -51,6 +51,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/users/code/initiate",
             "/api/users/code/verify",
             "/api/users/password/reset"
+    };
+
+    protected static final String[] SWAGGER_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
     };
 
     @Override
@@ -83,7 +89,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(WHITELIST_URLS)
+                .antMatchers(NO_AUTH_WHITELIST)
+                .permitAll()
+                .antMatchers(SWAGGER_WHITELIST)
                 .permitAll()
                 .anyRequest()
                 .authenticated();
@@ -91,5 +99,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
 }
