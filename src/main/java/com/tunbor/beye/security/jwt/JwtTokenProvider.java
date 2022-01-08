@@ -4,7 +4,6 @@ import com.tunbor.beye.security.UserPrincipal;
 import io.jsonwebtoken.*;
 
 import java.util.Date;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +41,13 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public UUID getUserIdFromJWT(String token) {
+    public Long getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return UUID.fromString(claims.getId());
+        return Long.parseLong(claims.getId());
     }
 
     public boolean validateToken(String authToken) {

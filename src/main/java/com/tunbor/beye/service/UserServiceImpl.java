@@ -2,13 +2,10 @@ package com.tunbor.beye.service;
 
 import com.tunbor.beye.entity.User;
 import com.tunbor.beye.repository.UserRepository;
-import com.tunbor.beye.utility.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 /**
  * @author Olakunle Awotunbo
@@ -29,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UUID userId, User user) {
+    public User updateUser(Long userId, User user) {
 
         /*
         userRepository.findById(userId).ifPresent(existingUser -> {

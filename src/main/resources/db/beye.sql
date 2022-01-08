@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `beye` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `beye`;
 -- MySQL dump 10.13  Distrib 5.7.24, for Win64 (x86_64)
 --
 -- Host: localhost    Database: beye
@@ -31,7 +29,6 @@ CREATE TABLE `company` (
   `created_by` binary(16) DEFAULT NULL,
   `updated_at` datetime(6) NOT NULL,
   `updated_by` binary(16) NOT NULL,
-  `uuid` binary(16) DEFAULT NULL,
   `version` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `tenant_id` bigint(20) NOT NULL,
@@ -64,7 +61,6 @@ CREATE TABLE `tenant` (
   `created_by` binary(16) DEFAULT NULL,
   `updated_at` datetime(6) NOT NULL,
   `updated_by` binary(16) NOT NULL,
-  `uuid` binary(16) DEFAULT NULL,
   `version` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -94,7 +90,6 @@ CREATE TABLE `user_roles` (
   `created_by` binary(16) DEFAULT NULL,
   `updated_at` datetime(6) NOT NULL,
   `updated_by` binary(16) NOT NULL,
-  `uuid` binary(16) DEFAULT NULL,
   `version` int(11) NOT NULL,
   `role` varchar(255) NOT NULL,
   `user_id` bigint(20) NOT NULL,
@@ -127,14 +122,15 @@ CREATE TABLE `users` (
   `created_by` binary(16) DEFAULT NULL,
   `updated_at` datetime(6) NOT NULL,
   `updated_by` binary(16) NOT NULL,
-  `uuid` binary(16) DEFAULT NULL,
   `version` int(11) NOT NULL,
   `account_non_expired` bit(1) NOT NULL,
   `account_non_locked` bit(1) NOT NULL,
+  `activated` bit(1) DEFAULT NULL,
   `credentials_non_expired` bit(1) NOT NULL,
   `email` varchar(40) DEFAULT NULL,
   `enabled` bit(1) NOT NULL,
   `first_name` varchar(100) DEFAULT NULL,
+  `hash` varchar(255) NOT NULL,
   `last_name` varchar(100) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
@@ -155,10 +151,6 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'beye'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -169,4 +161,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-06 16:13:06
+-- Dump completed on 2022-01-08 14:32:00

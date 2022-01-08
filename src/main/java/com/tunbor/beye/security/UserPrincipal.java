@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Getter
 public class UserPrincipal implements UserDetails {
 
-    private final UUID userId;
+    private final Long userId;
 
     private final String firstName;
 
