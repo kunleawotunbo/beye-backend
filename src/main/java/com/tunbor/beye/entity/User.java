@@ -1,5 +1,6 @@
 package com.tunbor.beye.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tunbor.beye.entity.audit.AuditableEntity;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -55,10 +56,12 @@ public class User extends AuditableEntity {
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<UserRole> userRoles = new HashSet<>();
     private boolean accountNonExpired;
