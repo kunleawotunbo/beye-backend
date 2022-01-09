@@ -51,4 +51,6 @@ public interface UserRepository extends BaseJpaRepository<User> {
     boolean existsByEmailIgnoreCase(String email);
 
     Optional<User> findFirstByEmailIgnoreCase(String email);
+
+    Optional<User> findById(Long id);
 }

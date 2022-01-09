@@ -52,22 +52,15 @@ public class User extends AuditableEntity {
     @Email
     private String email;
 
-    @NotBlank
-    @Size(max = 100)
+    @Column(nullable = false)
     private String password;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<UserRole> userRoles = new HashSet<>();
-
-    private Boolean activated = true;
-
-    @Column(nullable = false)
-    private String hash;
-
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;

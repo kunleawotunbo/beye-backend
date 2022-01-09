@@ -51,8 +51,8 @@ public class UserPrincipal implements UserDetails {
         return UserPrincipal.builder()
                 .userId(user.getId())
                 .username(user.getEmail())
-                .password(user.getHash())
-                .enabled(user.getActivated())
+                .password(user.getPassword())
+                .enabled(user.isEnabled())
                 .roles(roles)
                 .authorities(authorities)
                 .build();

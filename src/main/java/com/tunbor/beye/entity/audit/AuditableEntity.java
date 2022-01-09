@@ -29,7 +29,6 @@ public abstract class AuditableEntity implements Serializable {
     private Long id;
 
     @CreatedBy
-    @Column(columnDefinition = "BINARY(16)")
     private Long createdBy;
 
     @CreatedDate
@@ -38,7 +37,6 @@ public abstract class AuditableEntity implements Serializable {
 
     @LastModifiedBy
     @NotNull
-    @Column(columnDefinition = "BINARY(16)")
     private Long updatedBy;
 
     @LastModifiedDate
@@ -60,4 +58,15 @@ public abstract class AuditableEntity implements Serializable {
         return table == null ? null : table.name();
     }
 
+    @PrePersist
+    protected void prePersist() {
+        if (this.createdAt == null)
+            createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
+        if (this.updatedAt == null)
+            updatedAt = Instant.now();
+    }
 }
