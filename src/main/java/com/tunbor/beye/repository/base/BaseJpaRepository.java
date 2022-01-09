@@ -9,17 +9,16 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 /**
  * @author Olakunle Awotunbo
  * @since 06/01/2022
  */
 @NoRepositoryBean
-public interface BaseJpaRepository<TEntity extends AuditableEntity> extends JpaRepository<TEntity, UUID> {
+public interface BaseJpaRepository<TEntity extends AuditableEntity> extends JpaRepository<TEntity, Long> {
 
     @Transactional(readOnly = true)
-    default TEntity findById(UUID id, String modelName) {
+    default TEntity findById(Long id, String modelName) {
         return findById(id)
                 .orElseThrow(() -> ServiceUtils.wrongIdException(modelName, id));
     }
@@ -35,7 +34,7 @@ public interface BaseJpaRepository<TEntity extends AuditableEntity> extends JpaR
 
     @Override
     @Transactional
-    default void deleteById(@NotNull UUID id) {
+    default void deleteById(@NotNull Long id) {
         TEntity entity = findById(id)
                 .orElseThrow(() -> ServiceUtils.wrongIdException("Record", id));
         delete(entity);
@@ -60,5 +59,5 @@ public interface BaseJpaRepository<TEntity extends AuditableEntity> extends JpaR
     @Transactional
     @Modifying
     @Query("delete from #{#entityName} e where e.id = ?1")
-    void hardDelete(UUID id);
+    void hardDelete(Long id);
 }

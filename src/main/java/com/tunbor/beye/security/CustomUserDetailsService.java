@@ -4,7 +4,6 @@ import com.tunbor.beye.entity.User;
 import com.tunbor.beye.repository.UserRepository;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     // This method is used by JWTAuthenticationFilter
     @Transactional
-    public UserDetails loadUserById(UUID id) {
+    public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException("User not found with id : " + id)
         );

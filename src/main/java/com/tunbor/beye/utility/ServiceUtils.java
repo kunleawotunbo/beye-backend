@@ -3,7 +3,6 @@ package com.tunbor.beye.utility;
 import com.tunbor.beye.utility.exception.AppRuntimeException;
 
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * @author Olakunle Awotunbo
@@ -11,21 +10,21 @@ import java.util.UUID;
  */
 public class ServiceUtils {
 
-    public static AppRuntimeException wrongIdException(String modelName, UUID id) {
+    public static AppRuntimeException wrongIdException(String modelName, Long id) {
         return new AppRuntimeException(String.format("%s with Id '%s' not found", modelName, id));
     }
 
 
-    public static void throwWrongIdException(String modelName, UUID id) {
+    public static void throwWrongIdException(String modelName, Long id) {
         throw wrongIdException(modelName, id);
     }
 
-    public static AppRuntimeException noAccessIdException(String modelName, UUID id) {
+    public static AppRuntimeException noAccessIdException(String modelName, Long id) {
         return new AppRuntimeException(String.format("You do not have access to %s with id '%s'", modelName, id));
     }
 
 
-    public static void throwNoAccessIdException(String modelName, UUID id) {
+    public static void throwNoAccessIdException(String modelName, Long id) {
         throw noAccessIdException(modelName, id);
     }
 

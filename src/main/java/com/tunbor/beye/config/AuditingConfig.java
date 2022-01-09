@@ -3,7 +3,6 @@ package com.tunbor.beye.config;
 import com.tunbor.beye.security.UserPrincipal;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -18,9 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @Configuration
 @EnableJpaAuditing
-public class AuditingConfig implements AuditorAware<UUID> {
+public class AuditingConfig implements AuditorAware<Long> {
     @Override
-    public Optional<UUID> getCurrentAuditor() {
+    public Optional<Long> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null ||

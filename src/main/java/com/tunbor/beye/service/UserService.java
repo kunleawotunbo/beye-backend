@@ -1,8 +1,10 @@
 package com.tunbor.beye.service;
 
 import com.tunbor.beye.entity.User;
+import com.tunbor.beye.payload.LoginRequest;
+import com.tunbor.beye.payload.UserTokenResponse;
 
-import java.util.UUID;
+import java.util.List;
 
 /**
  * @author Olakunle Awotunbo
@@ -10,8 +12,14 @@ import java.util.UUID;
  */
 public interface UserService {
 
+    UserTokenResponse authenticate(LoginRequest loginRequest);
+
     User createUser(User user);
 
-    User updateUser(UUID id, User user);
+    User updateUser(Long id, User user);
+
+    User createTestUser(User user);
+
+    List<User> findAll();
 
 }

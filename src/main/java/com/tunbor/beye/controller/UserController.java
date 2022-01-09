@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Olakunle
@@ -23,6 +24,11 @@ import java.util.Collections;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping()
+    public List<User> getAllUsers() {
+        return userService.findAll();
+    }
 
     @PostMapping(value = "/register")
     public String registerUser(@RequestBody @Valid String firstName) {

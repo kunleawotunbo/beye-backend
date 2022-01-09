@@ -12,7 +12,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.UUID;
 
 /**
  * @author Olakunle Awotunbo
@@ -26,12 +25,11 @@ import java.util.UUID;
 public abstract class AuditableEntity implements Serializable {
 
     @Id
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @CreatedBy
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID createdBy;
+    private Long createdBy;
 
     @CreatedDate
     @NotNull
@@ -39,8 +37,7 @@ public abstract class AuditableEntity implements Serializable {
 
     @LastModifiedBy
     @NotNull
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID updatedBy;
+    private Long updatedBy;
 
     @LastModifiedDate
     @NotNull
@@ -52,42 +49,24 @@ public abstract class AuditableEntity implements Serializable {
     @Version
     private int version;
 
-
-    @PrePersist
-    public void validateUuid() {
-        if (id == null)
-            id = UUID.randomUUID();
-    }
-
-
     public String getTableName() {
         return getTableName(getClass());
     }
-
 
     public static <T extends AuditableEntity> String getTableName(Class<T> entityClass) {
         Table table = entityClass.getAnnotation(Table.class);
         return table == null ? null : table.name();
     }
 
-
-    @Override
-    public boolean equals(Object obj) {
-        if (id == null)
-            return super.equals(obj);
-        else if (obj == null || obj.getClass() != getClass())
-            return false;
-
-        return id == ((AuditableEntity) obj).id;
+    @PrePersist
+    protected void prePersist() {
+        if (this.createdAt == null)
+            createdAt = Instant.now();
     }
 
-
-    @Override
-    public int hashCode() {
-        if (id == null)
-            return super.hashCode();
-
-        long bitSum = id.getMostSignificantBits() + id.getLeastSignificantBits();
-        return Long.valueOf(bitSum).intValue();
+    @PreUpdate
+    protected void preUpdate() {
+        if (this.updatedAt == null)
+            updatedAt = Instant.now();
     }
 }

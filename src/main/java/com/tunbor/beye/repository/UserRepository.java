@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author Olakunle Awotunbo
@@ -47,9 +46,11 @@ public interface UserRepository extends BaseJpaRepository<User> {
 
     Page<User> findByUserRolesIn(Set<UserRole> roles, Pageable pageable);
 
-    List<User> findByCompanyId(UUID companyId);
+    List<User> findByCompanyId(Long companyId);
 
     boolean existsByEmailIgnoreCase(String email);
 
     Optional<User> findFirstByEmailIgnoreCase(String email);
+
+    Optional<User> findById(Long id);
 }

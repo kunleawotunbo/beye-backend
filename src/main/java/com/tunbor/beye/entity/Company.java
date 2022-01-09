@@ -1,5 +1,6 @@
 package com.tunbor.beye.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tunbor.beye.entity.audit.AuditableEntity;
 import lombok.*;
 
@@ -26,10 +27,12 @@ public class Company extends AuditableEntity {
     @Size(max = 100)
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "tenant_id", nullable = false)
     private Tenant tenant;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private Set<User> users;
 }

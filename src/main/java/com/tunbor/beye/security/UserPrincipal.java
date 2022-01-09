@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Getter
 public class UserPrincipal implements UserDetails {
 
-    private final UUID userId;
+    private final Long userId;
 
     private final String firstName;
 
@@ -51,8 +51,8 @@ public class UserPrincipal implements UserDetails {
         return UserPrincipal.builder()
                 .userId(user.getId())
                 .username(user.getEmail())
-                .password(user.getHash())
-                .enabled(user.getActivated())
+                .password(user.getPassword())
+                .enabled(user.isEnabled())
                 .roles(roles)
                 .authorities(authorities)
                 .build();
