@@ -4,6 +4,7 @@ import com.tunbor.beye.security.CustomAuthenticationSuccessHandler;
 import com.tunbor.beye.security.CustomUserDetailsService;
 import com.tunbor.beye.security.jwt.JwtAuthenticationEntryPoint;
 import com.tunbor.beye.security.jwt.JwtAuthenticationFilter;
+import com.tunbor.beye.utility.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Arrays;
 
 /**
  * @author Olakunle Awotunbo
@@ -41,16 +44,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     protected static final String[] NO_AUTH_WHITELIST = {
-            "/api/auth/**",
-            "/api/users/authenticate",
-            "/api/users/refresh-token",
-            "/api/users/register",
-            "/api/users/register/resend-code",
-            "/api/users/register-with-organisation",
-            "/api/users/complete-registration",
-            "/api/users/code/initiate",
-            "/api/users/code/verify",
-            "/api/users/password/reset"
+            AppConstants.VERSION_URL + "/test/**",
+            AppConstants.VERSION_URL + "/auth/**",
+            AppConstants.VERSION_URL + "/users/refresh-token",
+            AppConstants.VERSION_URL + "/users/register",
+            AppConstants.VERSION_URL + "/users/register/resend-code",
+            AppConstants.VERSION_URL + "/users/register-with-organisation",
+            AppConstants.VERSION_URL + "/users/complete-registration",
+            AppConstants.VERSION_URL + "/users/code/initiate",
+            AppConstants.VERSION_URL + "/users/code/verify",
+            AppConstants.VERSION_URL + "/users/password/reset"
     };
 
     protected static final String[] SWAGGER_WHITELIST = {

@@ -6,6 +6,7 @@ import com.tunbor.beye.entity.User;
 import com.tunbor.beye.entity.UserRole;
 import com.tunbor.beye.entity.enums.Role;
 import com.tunbor.beye.service.UserService;
+import com.tunbor.beye.utility.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(UserController.PATH)
 @RequiredArgsConstructor
 public class UserController {
+    public static final String PATH = AppConstants.VERSION_URL + "/users";
 
     private final UserService userService;
 

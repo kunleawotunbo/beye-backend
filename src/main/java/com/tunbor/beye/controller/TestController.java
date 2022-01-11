@@ -2,6 +2,7 @@ package com.tunbor.beye.controller;
 
 import com.tunbor.beye.entity.User;
 import com.tunbor.beye.service.UserService;
+import com.tunbor.beye.utility.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +13,11 @@ import javax.validation.Valid;
  * @since 07/01/2022
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(TestController.PATH)
 @RequiredArgsConstructor
 public class TestController {
+
+    public static final String PATH = AppConstants.VERSION_URL + "/test";
 
     private final UserService userService;
 

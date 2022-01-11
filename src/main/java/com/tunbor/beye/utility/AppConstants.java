@@ -5,5 +5,10 @@ package com.tunbor.beye.utility;
  * @since 06/01/2022
  */
 public interface AppConstants {
-    public static final int DEFAULT_PAGE_SIZE = 20;
+
+    int DEFAULT_PAGE_SIZE = 20;
+
+    int VERSION = 1;
+
+    String VERSION_URL = "/api/v" + AppConstants.VERSION;
 }
