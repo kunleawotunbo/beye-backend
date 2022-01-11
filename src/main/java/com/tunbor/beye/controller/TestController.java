@@ -1,5 +1,6 @@
 package com.tunbor.beye.controller;
 
+import com.tunbor.beye.dto.AppResponse;
 import com.tunbor.beye.entity.User;
 import com.tunbor.beye.service.UserService;
 import com.tunbor.beye.utility.AppConstants;
@@ -22,8 +23,8 @@ public class TestController {
     private final UserService userService;
 
     @GetMapping("/testMe")
-    public String test() {
-        return "This is a test";
+    public AppResponse<String> test() {
+        return AppResponse.createSuccess("This is a test");
     }
 
     @PostMapping(value = "/register")
