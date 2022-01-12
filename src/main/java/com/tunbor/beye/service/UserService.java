@@ -1,6 +1,7 @@
 package com.tunbor.beye.service;
 
 import com.tunbor.beye.entity.User;
+import com.tunbor.beye.mapstruct.dto.UserGetDTO;
 import com.tunbor.beye.payload.LoginRequest;
 import com.tunbor.beye.payload.UserTokenResponse;
 
@@ -21,5 +22,7 @@ public interface UserService {
     User createTestUser(User user);
 
     List<User> findAll();
+
+    List<UserGetDTO> findAllDTO();
 
 }

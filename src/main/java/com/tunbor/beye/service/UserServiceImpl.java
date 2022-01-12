@@ -5,6 +5,7 @@ import com.tunbor.beye.entity.Tenant;
 import com.tunbor.beye.entity.User;
 import com.tunbor.beye.entity.UserRole;
 import com.tunbor.beye.entity.enums.Role;
+import com.tunbor.beye.mapstruct.dto.UserGetDTO;
 import com.tunbor.beye.payload.LoginRequest;
 import com.tunbor.beye.payload.UserTokenResponse;
 import com.tunbor.beye.repository.UserRepository;
@@ -22,8 +23,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.tunbor.beye.mapstruct.mappers.UserMapper.*;
 
 /**
  * @author Olakunle Awotunbo
@@ -122,6 +126,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<UserGetDTO> findAllDTO() {
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+        userRepository.findAll().forEach(user -> userGetDTOs.add(INSTANCE.userToUserGetDTO(user)));
+        return userGetDTOs;
     }
 
 }

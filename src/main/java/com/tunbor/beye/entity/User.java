@@ -53,6 +53,7 @@ public class User extends AuditableEntity {
     @Email
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 

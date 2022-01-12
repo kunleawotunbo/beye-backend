@@ -5,6 +5,7 @@ import com.tunbor.beye.entity.Tenant;
 import com.tunbor.beye.entity.User;
 import com.tunbor.beye.entity.UserRole;
 import com.tunbor.beye.entity.enums.Role;
+import com.tunbor.beye.mapstruct.dto.UserGetDTO;
 import com.tunbor.beye.service.UserService;
 import com.tunbor.beye.utility.AppConstants;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class UserController {
     @GetMapping()
     public List<User> getAllUsers() {
         return userService.findAll();
+    }
+
+    @GetMapping("/all")
+    public List<UserGetDTO> findAllDTO() {
+        return userService.findAllDTO();
     }
 
     @PostMapping(value = "/register")
