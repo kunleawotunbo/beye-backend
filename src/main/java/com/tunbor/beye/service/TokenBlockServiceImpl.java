@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -61,5 +62,15 @@ public class TokenBlockServiceImpl implements TokenBlockService {
     @Override
     public boolean isTokenBlocked(String token) {
         return findByToken(token).isPresent();
+    }
+
+    @Override
+    public List<TokenBlock> findByBlockDateBefore(LocalDateTime blockDate) {
+        return tokenBlockRepository.findByBlockDateBefore(blockDate);
+    }
+
+    @Override
+    public void deleteTokenBlockByBlockDateBefore(LocalDateTime blockDate) {
+        tokenBlockRepository.deleteTokenBlockByBlockDateBefore(blockDate);
     }
 }
