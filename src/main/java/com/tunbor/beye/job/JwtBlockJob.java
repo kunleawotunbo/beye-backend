@@ -24,7 +24,7 @@ public class JwtBlockJob {
         this.tokenBlockService = tokenBlockService;
     }
 
-    @Scheduled(cron = "0 0 0 1/1 * ? *")  // Run daily at 00:00 hour i.e 12am
+    @Scheduled(cron = "0 0 0 * * ?")  // Run daily at 00:00 hour i.e 12am
     public void pruneTokenBlock() {
         log.info("JwtBlockJob start");
         LocalDateTime previousDay = LocalDateTime.now().minusDays(1);
