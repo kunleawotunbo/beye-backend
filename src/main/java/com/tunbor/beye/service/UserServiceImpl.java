@@ -7,9 +7,11 @@ import com.tunbor.beye.entity.UserRole;
 import com.tunbor.beye.entity.enums.Role;
 import com.tunbor.beye.mapstruct.dto.UserGetDTO;
 import com.tunbor.beye.payload.LoginRequest;
+import com.tunbor.beye.payload.RefreshTokenRequest;
 import com.tunbor.beye.payload.UserTokenResponse;
 import com.tunbor.beye.repository.UserRepository;
-import com.tunbor.beye.security.jwt.JwtTokenProvider;
+import com.tunbor.beye.security.AppUserDetails;
+import com.tunbor.beye.security.jwt.JwtTokenUtil;
 import com.tunbor.beye.utility.exception.AppRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider tokenProvider;
+    private final JwtTokenUtil jwtTokenUtil;
 
     private final UserRepository userRepository;
 
@@ -60,14 +62,25 @@ public class UserServiceImpl implements UserService {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String jwt = tokenProvider.generateToken(authentication);
-            return new UserTokenResponse(jwt, null);
+            String jwt = jwtTokenUtil.generateToken(authentication);
+            final String refreshToken = jwtTokenUtil.generateRefreshToken(loginRequest.getClientId());
+            return new UserTokenResponse(jwt, refreshToken);
         } catch (BadCredentialsException e) {
             throw new AppRuntimeException("Invalid username/password");
         } catch (DisabledException e) {
             throw new AppRuntimeException(String.format("User %s is Disabled. Please meet with administrator",
                     loginRequest.getUsernameOrEmail()));
         }
+    }
+
+    @Override
+    public UserTokenResponse refreshToken(RefreshTokenRequest request) {
+        AppUserDetails userDetails = jwtTokenUtil.getUserDetailsFromToken(request.getToken());
+
+        String token = jwtTokenUtil.generateAuthToken(userDetails);
+        String refreshToken = getRefreshToken(request);
+
+        return new UserTokenResponse(token, refreshToken);
     }
 
     @Override
@@ -133,6 +146,16 @@ public class UserServiceImpl implements UserService {
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
         userRepository.findAll().forEach(user -> userGetDTOs.add(INSTANCE.userToUserGetDTO(user)));
         return userGetDTOs;
+    }
+
+    private String getRefreshToken(RefreshTokenRequest request) {
+        String clientId = jwtTokenUtil.getSubjectFromToken(request.getRefreshToken());
+
+        // clientService.validateClient(clientId, request.getClientSecret());
+
+        return jwtTokenUtil.isTokenExpired(request.getRefreshToken()) ?
+                jwtTokenUtil.generateRefreshToken(clientId) :
+                request.getRefreshToken();
     }
 
 }

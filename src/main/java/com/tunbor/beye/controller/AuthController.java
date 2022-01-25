@@ -1,6 +1,7 @@
 package com.tunbor.beye.controller;
 
 import com.tunbor.beye.payload.LoginRequest;
+import com.tunbor.beye.payload.RefreshTokenRequest;
 import com.tunbor.beye.payload.UserTokenResponse;
 import com.tunbor.beye.service.UserService;
 import com.tunbor.beye.utility.AppConstants;
@@ -27,5 +28,10 @@ public class AuthController {
     @PostMapping("/authenticate")
     public UserTokenResponse authenticateUser(@RequestBody @Valid LoginRequest loginRequest) {
         return userService.authenticate(loginRequest);
+    }
+
+    @PostMapping("/refresh-token")
+    public UserTokenResponse refreshToken(@RequestBody @Valid RefreshTokenRequest request) {
+        return userService.refreshToken(request);
     }
 }

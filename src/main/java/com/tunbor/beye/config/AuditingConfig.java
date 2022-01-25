@@ -1,6 +1,6 @@
 package com.tunbor.beye.config;
 
-import com.tunbor.beye.security.UserPrincipal;
+import com.tunbor.beye.security.AppUserDetails;
 
 import java.util.Optional;
 
@@ -28,8 +28,8 @@ public class AuditingConfig implements AuditorAware<Long> {
             return Optional.empty();
         }
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
 
-        return Optional.ofNullable(userPrincipal.getUserId());
+        return Optional.ofNullable(appUserDetails.getUserId());
     }
 }
