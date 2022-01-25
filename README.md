@@ -6,6 +6,17 @@ The Swagger UI page will then be available at http://localhost:8080/swagger-ui.h
 
 The OpenAPI description will be available at the following url for json format: http://localhost:8080/v3/api-docs
 
+Features
+--------
+
+- **Authentication** 
+    - Using Username/Email and Password
+- **Account Management** 
+    - Profile Details
+    - Change Password
+    - Forgot Password
+    - Reset Password
+    - Delete Account
 
 ### Build Instructions
 #### Unit Tests

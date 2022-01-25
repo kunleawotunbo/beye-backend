@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @Getter
-public class UserPrincipal implements UserDetails {
+public class AppUserDetails implements UserDetails {
 
     private final Long userId;
 
@@ -39,7 +39,7 @@ public class UserPrincipal implements UserDetails {
 
     private final Collection<Role> roles;
 
-    public static UserPrincipal create(User user) {
+    public static AppUserDetails create(User user) {
         Set<Role> roles = user.getUserRoles().stream()
                 .map(UserRole::getRole)
                 .collect(Collectors.toSet());
@@ -48,7 +48,7 @@ public class UserPrincipal implements UserDetails {
                 new SimpleGrantedAuthority(role.getRole().name())
         ).collect(Collectors.toList());
 
-        return UserPrincipal.builder()
+        return AppUserDetails.builder()
                 .userId(user.getId())
                 .username(user.getEmail())
                 .password(user.getPassword())

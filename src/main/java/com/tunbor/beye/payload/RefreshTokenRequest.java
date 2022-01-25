@@ -6,20 +6,17 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 
-/**
- * @author Olakunle Awotunbo
- */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class LoginRequest {
+public class RefreshTokenRequest {
 
     @NotEmpty
-    private String usernameOrEmail;
+    private String token;
 
     @NotEmpty
-    private String password;
+    private String refreshToken;
 
-    // @NotEmpty
-    private String clientId = "";
+//    @NotEmpty
+//    private String clientSecret;
 }

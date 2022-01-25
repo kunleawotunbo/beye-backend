@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class AppResponse<T> {
 
-    private boolean success;
+    private final boolean success;
 
-    private List<AppError> errors;
+    private final List<AppError> errors;
 
     private final T body;
 
@@ -64,9 +64,9 @@ public class AppResponse<T> {
     @Getter
     public static class AppError {
 
-        private String message;
+        private final String message;
 
-        private AppErrorCode code;
+        private final AppErrorCode code;
 
         public static AppError from(String errorMessage) {
             return new AppError(errorMessage, AppErrorCode.COMMON_ERROR);

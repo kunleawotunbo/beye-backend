@@ -2,6 +2,7 @@ package com.tunbor.beye.utility.exception;
 
 import com.tunbor.beye.dto.AppErrorCode;
 import com.tunbor.beye.dto.AppResponse.AppError;
+import lombok.Getter;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  * @author Olakunle Awotunbo
  * @since 06/01/2022
  */
+@Getter
 public class AppRuntimeException extends RuntimeException {
 
     private List<AppError> errors;

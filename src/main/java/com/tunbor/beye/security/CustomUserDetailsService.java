@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail)
                 );
 
-        return UserPrincipal.create(user);
+        return AppUserDetails.create(user);
     }
 
     // This method is used by JWTAuthenticationFilter
@@ -43,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 () -> new UsernameNotFoundException("User not found with id : " + id)
         );
 
-        return UserPrincipal.create(user);
+        return AppUserDetails.create(user);
     }
 
     private static List<GrantedAuthority> getAuthorities(User user) {
