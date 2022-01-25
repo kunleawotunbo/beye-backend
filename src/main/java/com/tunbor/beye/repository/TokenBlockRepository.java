@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +20,11 @@ public interface TokenBlockRepository extends BaseJpaRepository<TokenBlock> {
 
     Optional<TokenBlock> findByUserId(Long userId);
 
-    List<TokenBlock> findByBlockDateBefore(LocalDateTime blockDate);
+    Optional<TokenBlock> findFirstByUserIdAndToken(Long userId, String token);
+
+    List<TokenBlock> findByTokenExpiryDateBefore(Date tokenExpiryDate);
 
     @Modifying
-    @Query("delete from TokenBlock t where t.blockDate < ?1")
-    void deleteTokenBlockByBlockDateBefore(LocalDateTime blockDate);
+    @Query("delete from TokenBlock t where t.tokenExpiryDate < ?1")
+    void deleteTokenBlockByTokenExpiryDateBefore(Date tokenExpiryDate);
 }

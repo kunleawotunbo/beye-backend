@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Builder
 @AllArgsConstructor
@@ -26,5 +26,5 @@ public class TokenBlock extends AuditableEntity {
     private String token;
 
     @NotNull
-    private LocalDateTime blockDate;
+    private Date tokenExpiryDate;
 }

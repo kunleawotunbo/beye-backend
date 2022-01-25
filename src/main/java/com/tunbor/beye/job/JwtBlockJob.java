@@ -1,6 +1,7 @@
 package com.tunbor.beye.job;
 
 import com.tunbor.beye.service.TokenBlockService;
+import com.tunbor.beye.utility.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,7 +29,7 @@ public class JwtBlockJob {
     public void pruneTokenBlock() {
         log.info("JwtBlockJob start");
         LocalDateTime previousDay = LocalDateTime.now().minusDays(1);
-        tokenBlockService.deleteTokenBlockByBlockDateBefore(previousDay);
+        tokenBlockService.deleteTokenBlockByTokenExpiryDateBefore(DateUtils.asDate(previousDay));
         log.info("JwtBlockJob completed");
     }
 }

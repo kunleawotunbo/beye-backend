@@ -3,7 +3,7 @@ package com.tunbor.beye.service;
 import com.tunbor.beye.entity.TokenBlock;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +16,8 @@ public interface TokenBlockService {
 
     Optional<TokenBlock> findByUserId(Long userId);
 
+    Optional<TokenBlock> findFirstByUserIdAndToken(Long userId, String token);
+
     TokenBlock save(TokenBlock tokenBlock);
 
     void hardDelete(Long tokenBlockId);
@@ -24,7 +26,7 @@ public interface TokenBlockService {
 
     boolean isTokenBlocked(String token);
 
-    List<TokenBlock> findByBlockDateBefore(LocalDateTime blockDate);
+    List<TokenBlock> findByTokenExpiryDateBefore(Date tokenExpiryDate);
 
-    void deleteTokenBlockByBlockDateBefore(LocalDateTime blockDate);
+    void deleteTokenBlockByTokenExpiryDateBefore(Date tokenExpiryDate);
 }
