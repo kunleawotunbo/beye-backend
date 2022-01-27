@@ -71,7 +71,7 @@ jobs:
           # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           # path: test-results
           path: /tmp/art-1
-            destination: artifact-file
+          destination: artifact-file
 
       - store_artifacts: # store the uberjar as an artifact
           # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
