@@ -2,10 +2,20 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1 # use CircleCI 2.1
 
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - unit-test
+      - publish-docker:
+          requires:
+            - unit-test
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  build: # runs not using Workflows must have a `build` job as entry point
+  # runs not using Workflows must have a `build` job as entry point
+  unit-test:
 
     working_directory: ~/beye-backend # directory where steps will run
 
@@ -52,7 +62,12 @@ jobs:
           command: |
             echo "my artifact file" > /tmp/art-1;
             mkdir /tmp/artifacts;
-            echo "my artifact files in a dir" > /tmp/artifacts/art-2;
+
+      - run:
+          name: Creating directory for test result
+          command: |
+            set -xu
+            mkdir -p /tmp/test-reports
 
       - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
@@ -65,13 +80,22 @@ jobs:
             - ~/.m2
           key: beye-backend-{{ checksum "pom.xml" }}
 
-      - run: mvn package # run the actual tests
+      - run:
+          name: Build and unit test
+          command: |
+            mvn package -B \
+              -Dbuild.number=${CIRCLE_BUILD_NUM} \
+              -Dcommit.hash=${CIRCLE_SHA1} \
+              -Dcircle.workflow.guid=${CIRCLE_WORKFLOW_ID} \
+              -Dbuild.user=${CIRCLE_PROJECT_USERNAME} \
+              -Dbuild.repo=${CIRCLE_PROJECT_REPONAME}
+
+      #- run: mvn package # run the actual tests
 
       - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
           # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          # path: test-results
-          path: /tmp/art-1
-          destination: artifact-file
+         #path: /tmp/test-reports
+         path: target/surefire-reports
 
       - store_artifacts: # store the uberjar as an artifact
           # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
@@ -79,5 +103,27 @@ jobs:
           path: /tmp/artifacts
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
 
+  publish-docker:
+    docker:
+      - image: cimg/openjdk:11.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - beye-backend-{{ checksum "pom.xml" }}
+            - beye-backend
+      - run: mvn dependency:go-offline
+      - run: cp .mvn/wrapper/settings.xml ~/.m2/settings.xml
+      - run: echo "<settingsSecurity><master>${maven_security_master}</master></settingsSecurity>" > ~/.m2/settings-security.xml
+      - run:
+          name: Publish Docker image with Jib
+          command: |
+            bash ./mvnw compile jib:build -B -DskipTests=true \
+              -Dbuild.number=${CIRCLE_BUILD_NUM} \
+              -Dcommit.hash=${CIRCLE_SHA1} \
+              -Dcircle.workflow.guid=${CIRCLE_WORKFLOW_ID} \
+              -Dbuild.user=${CIRCLE_PROJECT_USERNAME} \
+              -Dbuild.repo=${CIRCLE_PROJECT_REPONAME}
 
 # https://springframework.guru/configuring-mysql-with-circleci/

@@ -2,6 +2,7 @@ package com.tunbor.beye.controller;
 
 import com.tunbor.beye.dto.AppResponse;
 import com.tunbor.beye.entity.User;
+import com.tunbor.beye.service.BuildInfo;
 import com.tunbor.beye.service.UserService;
 import com.tunbor.beye.utility.AppConstants;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,8 @@ public class TestController {
     @Autowired
     private ResourceBundleMessageSource source;
 
+    private final BuildInfo buildInfo;
+
     @GetMapping("/testMe")
     public AppResponse<String> test() {
         return AppResponse.createSuccess("This is a test");
@@ -53,5 +56,11 @@ public class TestController {
             @RequestParam(name = "username", defaultValue = "Ola", required = false) final String username) {
         log.info("Returning greetings for locale = {}", locale);
         return AppResponse.createSuccess(source.getMessage(greetings, new Object[]{username}, locale));
+    }
+
+    @GetMapping("/build-info")
+    @ResponseBody
+    public BuildInfo greeting() {
+        return buildInfo;
     }
 }
