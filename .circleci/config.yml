@@ -27,21 +27,13 @@ jobs:
       - checkout # check out source code to working directory
 
       - run:
-          name: Waiting for MySQL to be ready
-          command: |
-            for i in `seq 1 10`;
-            do
-            nc -z 127.0.0.1 3306 && echo Success && exit 0
-            echo -n .
-            sleep 1
-            done
-            echo Failed waiting for MySQL && exit 1
-      - run:
-          name: Install MySQL CLI; Import dummy data; run an example query
-          command: |
-            sudo apt-get update
-            sudo apt-get install mysql*
-            mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
+          name: Wait for Database Connection
+          # preinstalled in circleci/* docker image
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+            #install mysql client
+            - run: sudo apt-get install mysql-client
+            # create databases
+            - run: mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
 
       - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
@@ -58,11 +50,11 @@ jobs:
 
       - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
           # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: target/surefire-reports
+          path: test-results
 
       - store_artifacts: # store the uberjar as an artifact
           # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-          path: target/beye-backend.jar
+          path: beye-backend/artifacts/beye-backend.jar
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
 
 
