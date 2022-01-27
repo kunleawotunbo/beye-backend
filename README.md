@@ -1,4 +1,6 @@
 ## Beye-backend
+[![CircleCI](https://circleci.com/gh/kunleawotunbo/beye-backend/tree/main.svg?style=shield&circle-token=108d36c8d2ec28bf03a5fb01d4985a4e40b63dde)](https://circleci.com/gh/kunleawotunbo/beye-backend/tree/circleci-project-setup)
+
 This is a RESTful API for the business management application.
 
 ## Swagger
