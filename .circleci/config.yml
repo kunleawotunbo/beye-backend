@@ -28,12 +28,11 @@ jobs:
 
       - run:
           name: Wait for Database Connection
-          # preinstalled in circleci/* docker image
-          command: dockerize -wait tcp://localhost:3306 -timeout 1m
-            #install mysql client
-            - run: sudo apt-get install mysql-client
-            # create databases
-            - run: mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
+          command:
+            dockerize -wait tcp://localhost:3306 -timeout 1m
+            sudo apt-get update
+            sudo apt-get install mysql*
+            mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
 
       - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
