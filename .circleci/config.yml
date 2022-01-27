@@ -47,7 +47,12 @@ jobs:
             sudo apt-get install -y default-mysql-client
             mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
 
-          # mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
+      - run:
+          name: Creating Artifacts directory
+          command: |
+            echo "my artifact file" > /tmp/art-1;
+            mkdir /tmp/artifacts;
+            echo "my artifact files in a dir" > /tmp/artifacts/art-2;
 
       - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
@@ -64,11 +69,14 @@ jobs:
 
       - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
           # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: /tmp/test-results
+          # path: test-results
+          path: /tmp/art-1
+            destination: artifact-file
 
       - store_artifacts: # store the uberjar as an artifact
           # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-          path: artifacts/beye-backend.jar
+          # path: artifacts/beye-backend.jar
+          path: /tmp/artifacts
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
 
 
