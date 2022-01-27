@@ -21,7 +21,7 @@ jobs:
           MYSQL_DATABASE: test_db
           MYSQL_USER: user
           MYSQL_PASSWORD: passw0rd
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          #MYSQL_ALLOW_EMPTY_PASSWORD: yes
 
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
@@ -45,6 +45,7 @@ jobs:
           command: |
             sudo apt-get update -y
             sudo apt-get install -y default-mysql-client
+            mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
 
           # mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
 
