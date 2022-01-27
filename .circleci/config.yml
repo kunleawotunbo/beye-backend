@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Install MySQL CLI;
           command: |
-            sudo apt-get install default-mysql-client
+            sudo apt-get install mysql-client
 
       - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
