@@ -13,6 +13,8 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker: # run the steps with Docker
       - image: cimg/openjdk:11.0 # ...with this image as the primary container; this is where all `steps` will run
+        environment:
+          SPRING_PROFILES_ACTIVE: test
       - image: cimg/mysql:5.7 # mysql 5.7 docker image
         environment:
           MYSQL_ROOT_PASSWORD: rootpw
@@ -26,13 +28,6 @@ jobs:
 
       - checkout # check out source code to working directory
 
-#      - run:
-#          name: Wait for Database Connection
-#          command:
-#            dockerize -wait tcp://localhost:3306 -timeout 1m
-#            sudo apt-get update
-#            sudo apt-get install mysql*
-#            mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
       - run:
           # Our primary container isn't MYSQL so run a sleep command until it's ready.
           name: Waiting for MySQL to be ready
@@ -49,7 +44,8 @@ jobs:
           command: |
             sudo apt-get update -y
             sudo apt-get install -y default-mysql-client
-            mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
+
+          # mysql -h 127.0.0.1 -u root -prootpw --execute="use test_db;"
 
       - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
