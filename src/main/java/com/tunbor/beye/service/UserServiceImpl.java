@@ -9,6 +9,8 @@ import com.tunbor.beye.mapstruct.dto.UserGetDTO;
 import com.tunbor.beye.payload.LoginRequest;
 import com.tunbor.beye.payload.RefreshTokenRequest;
 import com.tunbor.beye.payload.UserTokenResponse;
+import com.tunbor.beye.repository.CompanyRepository;
+import com.tunbor.beye.repository.TenantRepository;
 import com.tunbor.beye.repository.UserRepository;
 import com.tunbor.beye.security.AppUserDetails;
 import com.tunbor.beye.security.jwt.JwtTokenUtil;
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.tunbor.beye.mapstruct.mappers.UserMapper.*;
 
@@ -47,6 +50,8 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenUtil jwtTokenUtil;
 
     private final UserRepository userRepository;
+    private final TenantRepository tenantRepository;
+    private final CompanyRepository companyRepository;
 
     private final TenantService tenantService;
     private final CompanyService companyService;
@@ -95,37 +100,48 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createTestUser(User user) {
-        user.setFirstName(user.getFirstName());
-        user.setEmail("test@test.com");
 
         /*
         userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> ServiceUtils.duplicateEmailException("User", user.getEmail()));
         */
 
-        Tenant tenant = new Tenant();
-        tenant.setName("Test Tenant");
-        tenant.setCreatedBy(0L);
-        tenant.setUpdatedBy(0L);
-        // tenant.setCompanies(Collections.singleton(company));
+        Tenant tenant;
+        Optional<Tenant> firstTenant = tenantRepository.findById(1L);
+        if (firstTenant.isPresent()) {
+            tenant = firstTenant.get();
+        } else {
+            tenant = new Tenant();
+            tenant.setName("Test Tenant");
+            tenant.setCreatedBy(0L);
+            tenant.setUpdatedBy(0L);
 
-        Tenant newTenant = tenantService.save(tenant);
+            tenant = tenantService.save(tenant);
+        }
 
-        Company company = new Company();
-        company.setName("Sofort");
-        company.setTenant(newTenant);
-        company.setCreatedBy(0L);
-        company.setUpdatedBy(0L);
-        Company newCompany = companyService.save(company);
+        Company company;
+        Optional<Company> firstCompany = companyRepository.findById(1L);
+        if (firstCompany.isPresent()) {
+            company = firstCompany.get();
+        } else {
+            company = new Company();
+            company.setName("Sofort");
+            company.setTenant(tenant);
+            company.setCreatedBy(0L);
+            company.setUpdatedBy(0L);
 
+            company = companyService.save(company);
+        }
+
+        String firstNameLastName = user.getFirstName().toLowerCase() + "." + user.getLastName().toLowerCase();
 
         UserRole userRole = new UserRole();
         userRole.setRole(Role.ADMIN);
 
-        user.setLastName("Fashola");
-        user.setUsername("test");
-        user.setPassword("Test");
-        user.setCompany(newCompany);
+        user.setEmail(firstNameLastName + "@test.com");
+        user.setUsername(firstNameLastName);
+        user.setPassword("Test1");
+        user.setCompany(company);
         user.setUserRoles(Collections.singleton(userRole));
         String hash = passwordEncoder.encode(user.getPassword());
         user.setPassword(hash);
